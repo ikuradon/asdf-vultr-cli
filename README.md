@@ -44,7 +44,7 @@ asdf install vultr-cli latest
 asdf global vultr-cli latest
 
 # Now vultr-cli commands are available
-vultr-cli --version
+vultr-cli --help
 ```
 
 Check [asdf](https://github.com/asdf-vm/asdf) readme for more instructions on how to
