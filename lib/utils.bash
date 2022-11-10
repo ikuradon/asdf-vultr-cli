@@ -70,7 +70,7 @@ install_version() {
   )
 }
 
-get_arch(){
+get_arch() {
   local arch
   arch=$(uname -m | tr '[:upper:]' '[:lower]')
   case ${arch} in
@@ -91,7 +91,7 @@ get_arch(){
   echo $arch
 }
 
-get_platform(){
+get_platform() {
   local platform
   platform=$(uname | tr '[:upper:]' '[:lower:]')
   case ${platform} in
