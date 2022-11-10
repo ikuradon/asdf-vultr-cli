@@ -2,10 +2,9 @@
 
 set -euo pipefail
 
-# TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for vultr-cli.
 GH_REPO="https://github.com/vultr/vultr-cli"
 TOOL_NAME="vultr-cli"
-TOOL_TEST="vultr-cli --version"
+TOOL_TEST="vultr-cli --help"
 
 fail() {
   echo -e "asdf-$TOOL_NAME: $*"
@@ -31,18 +30,17 @@ list_github_tags() {
 }
 
 list_all_versions() {
-  # TODO: Adapt this. By default we simply list the tag names from GitHub releases.
-  # Change this function if vultr-cli has other means of determining installable versions.
   list_github_tags
 }
 
 download_release() {
-  local version filename url
+  local version filename url arch platform
   version="$1"
   filename="$2"
+  arch="$3"
+  platform="$4"
 
-  # TODO: Adapt the release URL convention for vultr-cli
-  url="$GH_REPO/archive/v${version}.tar.gz"
+  url="$GH_REPO/releases/download/v${version}/${TOOL_NAME}_${version}_${platform}_${arch}.tar.gz"
 
   echo "* Downloading $TOOL_NAME release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
@@ -61,7 +59,6 @@ install_version() {
     mkdir -p "$install_path"
     cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
 
-    # TODO: Assert vultr-cli executable exists.
     local tool_cmd
     tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
     test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
@@ -71,4 +68,43 @@ install_version() {
     rm -rf "$install_path"
     fail "An error occurred while installing $TOOL_NAME $version."
   )
+}
+
+get_arch(){
+  local arch
+  arch=$(uname -m | tr '[:upper:]' '[:lower]')
+  case ${arch} in
+  arm64)
+    arch='arm64-bit'
+    ;;
+  armv6l)
+    arch='armv6'
+    ;;
+  armv7l)
+    arch='armv7'
+    ;;
+  x86_64)
+    arch='64-bit'
+    ;;
+  esac
+
+  echo $arch
+}
+
+get_platform(){
+  local platform
+  platform=$(uname | tr '[:upper:]' '[:lower:]')
+  case ${platform} in
+  darwin)
+    platform='macOs'
+    ;;
+  linux)
+    platform='linux'
+    ;;
+  windows)
+    platform='windows'
+    ;;
+  esac
+
+  echo $platform
 }
