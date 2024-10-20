@@ -75,7 +75,7 @@ get_arch() {
   arch=$(uname -m | tr '[:upper:]' '[:lower]')
   case ${arch} in
   arm64)
-    arch='arm64-bit'
+    arch='arm64'
     ;;
   armv6l)
     arch='armv6'
@@ -84,7 +84,7 @@ get_arch() {
     arch='armv7'
     ;;
   x86_64)
-    arch='64-bit'
+    arch='amd64'
     ;;
   esac
 
