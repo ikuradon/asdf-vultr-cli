@@ -40,7 +40,7 @@ download_release() {
   arch="$3"
   platform="$4"
 
-  url="$GH_REPO/releases/download/v${version}/${TOOL_NAME}_${version}_${platform}_${arch}.tar.gz"
+  url="$GH_REPO/releases/download/v${version}/${TOOL_NAME}_v${version}_${platform}_${arch}.tar.gz"
 
   echo "* Downloading $TOOL_NAME release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
@@ -75,7 +75,7 @@ get_arch() {
   arch=$(uname -m | tr '[:upper:]' '[:lower]')
   case ${arch} in
   arm64)
-    arch='arm64-bit'
+    arch='arm64'
     ;;
   armv6l)
     arch='armv6'
@@ -84,7 +84,7 @@ get_arch() {
     arch='armv7'
     ;;
   x86_64)
-    arch='64-bit'
+    arch='amd64'
     ;;
   esac
 
